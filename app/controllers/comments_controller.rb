@@ -10,6 +10,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to post_path(@post)
     else
+      @post = Post.includes(:comments).find(params[:post_id])
       render "posts/show", status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordNotFound

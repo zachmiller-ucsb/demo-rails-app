@@ -14,7 +14,7 @@
 </ul>
 
 <h2>Comments</h2>
-<%= render @post.comments %>
+<%= render @post.comments.reject(&:new_record?) %>
 
 <h2>Add a comment:</h2>
 <%= render "comments/form", post: @post, comment: @comment %><br>

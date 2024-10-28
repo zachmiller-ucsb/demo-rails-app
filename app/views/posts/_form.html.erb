@@ -2,15 +2,14 @@
   <div>
     <%= form.label :title %><br>
     <%= form.text_field :title %>
-    <% post.errors.full_messages_for(:title).each do |message| %>
+    <% post.errors[:title].each do |message| %>
       <div><%= message %></div>
     <% end %>
-  </div>
+  </div><br>
 
   <div>
-    <%= form.label :body %><br>
     <%= form.text_area :body %><br>
-    <% post.errors.full_messages_for(:body).each do |message| %>
+    <% post.errors[:body].each do |message| %>
       <div><%= message %></div>
     <% end %>
   </div>
