@@ -1,5 +1,13 @@
 <h1>Posts</h1>
 
+<%= form_with url: posts_path, method: :get, local: true do |form| %>
+  <%= form.label :author_name, "Search by Author:" %>
+  <%= form.text_field :author_name, value: params[:author_name] %>
+  <%= form.submit "Search" %>
+<% end %><br>
+
+<%= button_to "Clear Search", posts_path, method: :get %>
+
 <ul>
   <% @posts.each do |post| %>
     <li>
@@ -11,6 +19,6 @@
   <% end %>
 </ul>
 
-<%= link_to "New Post", new_post_path %><br>
+<%= button_to "New Post", new_post_path, method: :get %><br>
 
-<%= link_to "Log Out", logout_path %>
+<%= button_to "Log Out", logout_path, method: :get %>

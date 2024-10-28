@@ -1,6 +1,9 @@
 class PostsController < ApplicationController
   def index
     @posts = Post.order(updated_at: :desc)
+    if params[:author_name].present?
+      @posts = @posts.by_author_name(params[:author_name])
+    end
   end
 
   def new
