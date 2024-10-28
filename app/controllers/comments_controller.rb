@@ -4,26 +4,28 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @post = Post.find_by(params[:post_id])
-    if @post.nil?
-      render file: "#{Rails.root}/public/404.html", status: :not_found
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.build(comment_params.merge(user_id: session[:user_id]))
+
+    if @comment.save
+      redirect_to post_path(@post)
+    else
+      render "posts/show", status: :unprocessable_entity
     end
-    @comment = @post.comments.create(comment_params.merge(user_id: session[:user_id]))
-    redirect_to post_path(@post)
+  rescue ActiveRecord::RecordNotFound
+    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   def destroy
-    @post = Post.find_by(params[:post_id])
-    if @post.nil?
-      render file: "#{Rails.root}/public/404.html", status: :not_found
-    end
-    @comment = @post.comments.find_by(params[:id])
-    if !@comment.nil?
-      if @comment.user_id == session[:user_id]
-        @comment.destroy
-      end
+    @post = Post.find(params[:post_id])
+
+    @comment = @post.comments.find(params[:id])
+    if @comment.user_id == session[:user_id]
+      @comment.destroy
     end
     redirect_to post_path(@post), status: :see_other
+  rescue ActiveRecord::RecordNotFound
+    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   private

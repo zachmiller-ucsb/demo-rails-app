@@ -1,7 +1,9 @@
-<%= form_with model: [ post, post.comments.build ] do |form| %>
+<%= form_with model: [ post, comment ] do |form| %>
   <p>
-    <%= form.label :body %><br>
-    <%= form.text_area :body %>
+    <%= form.text_area :body %><br>
+    <% comment.errors.full_messages.each do |message| %>
+      <div><%= message %></div>
+    <% end %>
   </p>
   
   <p>

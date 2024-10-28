@@ -17,6 +17,6 @@
 <%= render @post.comments %>
 
 <h2>Add a comment:</h2>
-<%= render "comments/form", post: @post %><br>
+<%= render "comments/form", post: @post, comment: @comment %><br>
 
 <%= button_to "Back to posts", root_path, method: :get %>

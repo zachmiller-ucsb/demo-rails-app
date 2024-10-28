@@ -21,19 +21,19 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find_by(id: params[:id])
-    if @post.nil?
-      render file: "#{Rails.root}/public/404.html", status: :not_found
-    end
+    @post = Post.find(params[:id])
+    @comment = @post.comments.build
+  rescue ActiveRecord::RecordNotFound
+    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   def edit
-    @post = Post.find_by(id: params[:id])
-    if @post.nil?
-      render file: "#{Rails.root}/public/404.html", status: :not_found
-    elsif @post.user_id != session[:user_id]
+    @post = Post.find(params[:id])
+    if @post.user_id != session[:user_id]
       redirect_to @post
     end
+  rescue ActiveRecord::RecordNotFound
+    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   def update
@@ -48,17 +48,18 @@ class PostsController < ApplicationController
     else
       redirect_to @post
     end
+  rescue ActiveRecord::RecordNotFound
+    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   def destroy
-    @post = Post.find_by(id: params[:id])
-    if !@post.nil?
-      if @post.user_id == session[:user_id]
-        @post.destroy
-      end
+    @post = Post.find(id: params[:id])
+    if @post.user_id == session[:user_id]
+      @post.destroy
     end
-
     redirect_to root_path, status: :see_other
+  rescue ActiveRecord::RecordNotFound
+    render file: "#{Rails.root}/public/404.html", status: :not_found
   end
 
   private
