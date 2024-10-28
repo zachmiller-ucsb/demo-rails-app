@@ -1,3 +1,16 @@
-<h1>The home page!</h1>
+<h1>Posts</h1>
 
-<p>Currently empty...</p>
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <%= link_to post.title, post %><br>
+      Creator: <%= post.user.name %><br>
+      <%= post.comments.size %> Comments<br>
+      Last Updated: <%= post.updated_at.strftime("%B %d, %Y %H:%M") %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "New Post", new_post_path %><br>
+
+<%= link_to "Log Out", logout_path %>
