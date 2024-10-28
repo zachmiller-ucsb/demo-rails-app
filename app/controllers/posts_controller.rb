@@ -31,23 +31,31 @@ class PostsController < ApplicationController
     @post = Post.find_by(id: params[:id])
     if @post.nil?
       render file: "#{Rails.root}/public/404.html", status: :not_found
+    elsif @post.user_id != session[:user_id]
+      redirect_to @post
     end
   end
 
   def update
     @post = Post.find(params[:id])
 
-    if @post.update(post_params)
-      redirect_to @post
+    if @post.user_id == session[:user_id]
+      if @post.update(post_params)
+        redirect_to @post
+      else
+        render :edit, status: :unprocessable_entity
+      end
     else
-      render :edit, status: :unprocessable_entity
+      redirect_to @post
     end
   end
 
   def destroy
     @post = Post.find_by(id: params[:id])
     if !@post.nil?
-      @post.destroy
+      if @post.user_id == session[:user_id]
+        @post.destroy
+      end
     end
 
     redirect_to root_path, status: :see_other

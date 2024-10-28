@@ -1,16 +1,22 @@
 <h1><%= @post.title %></h1>
-<h2>Creator: <%= @post.user.name %></h2>
+<h2>Author: <%= @post.user.name %></h2>
 
 <p><%= @post.body %></p>
 
 <ul>
-  <% if session[:user_id] == @post.user.id %>
-    <li><%= link_to "Edit", edit_post_path(@post) %></li>
-    <li><%= link_to "Destroy", post_path(@post), data: {
+  <% if session[:user_id] == @post.user_id %>
+    <li><%= button_to "Edit", edit_post_path(@post), method: :get %></li><br>
+    <li><%= button_to "Destroy", post_path(@post), method: :delete, data: {
                       turbo_method: :delete,
                       turbo_confirm: "Are you sure?"
                     } %></li>
   <% end %>
 </ul>
 
-<%= link_to "Back to posts", root_path %>
+<h2>Comments</h2>
+<%= render @post.comments %>
+
+<h2>Add a comment:</h2>
+<%= render "comments/form", post: @post %><br>
+
+<%= button_to "Back to posts", root_path, method: :get %>

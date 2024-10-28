@@ -1,0 +1,18 @@
+<p>
+  <strong>Commenter:</strong>
+  <%= comment.user.name %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= comment.body %>
+</p>
+
+<% if session[:user_id] == comment.user_id %>
+  <p>
+    <%= button_to "Delete Comment", [comment.post, comment], method: :delete, data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %>
+  </p>
+<% end %>
