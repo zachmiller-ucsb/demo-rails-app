@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  root "users#login"
+  root "posts#index"
+
+  resources :users
+  resource :posts do
+    resources :comments
+  end
+
+  get "/login", to: "users#new", as: :login
+  get "/logout", to: "users#logout", as: :logout
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
