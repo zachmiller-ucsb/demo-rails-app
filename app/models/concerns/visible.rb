@@ -7,7 +7,7 @@ module Visible
 
   private
     def cannot_attempt_to_influence_election
-      trigger_words = [ "Trump", "Harris" ]
+      trigger_words = [ "trump", "harris" ]
       found_words_title = trigger_words.select { |word| title_contains?(word) }
       found_words_body = trigger_words.select { |word| body_contains?(word) }
 
@@ -21,10 +21,10 @@ module Visible
     end
 
     def title_contains?(word)
-      respond_to?(:title) && title&.include?(word)
+      respond_to?(:title) && title&.downcase&.include?(word)
     end
 
     def body_contains?(word)
-      respond_to?(:body) && body&.include?(word)
+      respond_to?(:body) && body&.downcase&.include?(word)
     end
 end
