@@ -53,11 +53,13 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(id: params[:id])
+    @post = Post.find(params[:id])
     if @post.user_id == session[:user_id]
       @post.destroy
+      redirect_to root_path, status: :see_other
+    else
+      redirect_to @post
     end
-    redirect_to root_path, status: :see_other
   rescue ActiveRecord::RecordNotFound
     render file: "#{Rails.root}/public/404.html", status: :not_found
   end
